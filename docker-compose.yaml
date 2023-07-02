@@ -1,0 +1,56 @@
+#version: '3'
+
+#networks:
+#  nextcloud:
+#    driver: host
+#  bridge:
+#    driver: bridge
+
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: nextcloud:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=nextclouddb
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_HOST=db
+      - NEXTCLOUD_ADMIN_USER=ncadmin
+      - NEXTCLOUD_ADMIN_PASSWORD=Wjlsotqpl112233
+#      - REDIS_HOST=redis
+#      - REDIS_PORT=6379
+#      - REDIS_PASSWORD=nextcloud_redis_pass
+    ports:
+      - 8080:80
+#      - 443:443
+#    networks:
+#      - nextcloud
+#      - bridge
+    depends_on:
+      - db
+#      - redis
+    volumes:
+      - /root/nextcloud/nc_data:/var/www/html
+#      - /root/nextcloud/nc_data2:/mnt/mainexthdd
+#      - G:\DO_NOT_DELETE\nextcloud\nc_data:/var/www/html
+#      - G:\DO_NOT_DELETE\nextcloud\nc_data2:/mnt/mainexthdd
+    
+  db:
+    container_name: ncdb
+    image: mariadb:latest
+#    networks:
+#      - nextcloud
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=nextclouddb
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_ROOT_PASSWORD=Wjlsofqpl112233
+#    ports:
+#      - 3306:3306
+    volumes:
+      - /root/nextcloud/db_data:/var/lib/mysql
+#      - G:\DO_NOT_DELETE\nextcloud\db_data:/var/lib/mysql
+    
+
